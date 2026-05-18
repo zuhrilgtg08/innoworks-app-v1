@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App V1 - Training Monitor Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #0F1419 0%, #1A1F2E 100%);
+            color: #FFFFFF;
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: #0F1419;
+            border-right: 1px solid #2A3142;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .sidebar-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #5B6FFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .sidebar-title {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .nav-menu {
+            list-style: none;
+            flex: 1;
+        }
+
+        .nav-item {
+            margin-bottom: 12px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            color: #A8AABC;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            background: #1A1F2E;
+            color: #FFFFFF;
+        }
+
+        .nav-link.active {
+            background: #5B6FFF;
+            color: #FFFFFF;
+        }
+
+        .nav-icon {
+            font-size: 18px;
+            width: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 32px;
+            overflow-y: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #2A3142;
+        }
+
+        .header-title {
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .header-subtitle {
+            color: #A8AABC;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: #5B6FFF;
+            color: #FFFFFF;
+        }
+
+        .btn-primary:hover {
+            background: #4A5DE8;
+        }
+
+        .btn-secondary {
+            background: #FF6B6B;
+            color: #FFFFFF;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #5B6FFF;
+            color: #5B6FFF;
+        }
+
+        .btn-outline:hover {
+            background: rgba(91, 111, 255, 0.1);
+        }
+
+        /* Grid and Cards */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .card {
+            background: #1A1F2E;
+            border: 1px solid #2A3142;
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: #5B6FFF;
+            box-shadow: 0 8px 24px rgba(91, 111, 255, 0.1);
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #A8AABC;
+            margin-bottom: 16px;
+        }
+
+        .card-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 8px;
+        }
+
+        .card-subtitle {
+            font-size: 12px;
+            color: #7A7C8C;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(0, 208, 135, 0.1);
+            border-radius: 20px;
+            margin-bottom: 16px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #00D087;
+        }
+
+        .status-text {
+            color: #00D087;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #252C3F;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #5B6FFF, #208AEF);
+            width: 45%;
+            border-radius: 4px;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #A8AABC;
+        }
+
+        /* Chart Container */
+        .chart-container {
+            background: #1A1F2E;
+            border: 1px solid #2A3142;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .chart-title {
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #A8AABC;
+        }
+
+        .chart-metric {
+            font-size: 12px;
+            color: #5B6FFF;
+        }
+
+        .chart-placeholder {
+            width: 100%;
+            height: 280px;
+            background: linear-gradient(135deg, rgba(91, 111, 255, 0.05) 0%, rgba(32, 138, 239, 0.05) 100%);
+            border: 1px dashed #2A3142;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #7A7C8C;
+            font-size: 14px;
+        }
+
+        /* Project Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .project-card {
+            background: #1A1F2E;
+            border: 1px solid #2A3142;
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover {
+            border-color: #5B6FFF;
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(91, 111, 255, 0.15);
+        }
+
+        .project-category {
+            font-size: 11px;
+            font-weight: 600;
+            color: #5B6FFF;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .project-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 16px;
+        }
+
+        .project-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #A8AABC;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+
+            .main-content {
+                padding: 16px;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 16px;
+                align-items: flex-start;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">⚡</div>
+                <div class="sidebar-title">App V1</div>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link active">
+                        <span class="nav-icon">🏠</span>
+                        <span>Beranda</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="live-cam.html" class="nav-link">
+                        <span class="nav-icon">📷</span>
+                        <span>Live Cam</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="training.html" class="nav-link">
+                        <span class="nav-icon">⚡</span>
+                        <span>Training</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="logs.html" class="nav-link">
+                        <span class="nav-icon">📋</span>
+                        <span>Log Sistem</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="settings.html" class="nav-link">
+                        <span class="nav-icon">⚙️</span>
+                        <span>Pengaturan</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <div>
+                    <div class="header-title">Project List</div>
+                    <div class="header-subtitle">Kelola dan pilih proyek deteksi objek</div>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-primary">+ Proyek Baru</button>
+                </div>
+            </div>
+
+            <!-- Projects Grid -->
+            <div class="projects-grid">
+                <!-- Project 1 -->
+                <div class="project-card">
+                    <div class="project-category">Object Detection</div>
+                    <div class="project-title">Kereta api & rel</div>
+                    <div class="project-stats">
+                        <span>📁 234 gambar</span>
+                        <span>⏱️ 2 hari lalu</span>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="project-card">
+                    <div class="project-category">Segmentation</div>
+                    <div class="project-title">Rail semantic</div>
+                    <div class="project-stats">
+                        <span>📁 91 gambar</span>
+                        <span>⏱️ 5 jam lalu</span>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="project-card">
+                    <div class="project-category">Classification</div>
+                    <div class="project-title">Signaling class</div>
+                    <div class="project-stats">
+                        <span>📁 1,102 gambar</span>
+                        <span>⏱️ 1 hari lalu</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="grid">
+                <div class="card">
+                    <div class="card-title">Total Projects</div>
+                    <div class="card-value">3</div>
+                    <div class="card-subtitle">Active training projects</div>
+                </div>
+                <div class="card">
+                    <div class="card-title">Total Images</div>
+                    <div class="card-value">1,427</div>
+                    <div class="card-subtitle">Across all projects</div>
+                </div>
+                <div class="card">
+                    <div class="card-title">Models Trained</div>
+                    <div class="card-value">5</div>
+                    <div class="card-subtitle">Ready for deployment</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
