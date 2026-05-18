@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App V1 - Live Detection</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #0F1419 0%, #1A1F2E 100%);
+            color: #FFFFFF;
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 260px;
+            background: #0F1419;
+            border-right: 1px solid #2A3142;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .sidebar-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #5B6FFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .sidebar-title {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .nav-menu {
+            list-style: none;
+            flex: 1;
+        }
+
+        .nav-item {
+            margin-bottom: 12px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            color: #A8AABC;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            background: #1A1F2E;
+            color: #FFFFFF;
+        }
+
+        .nav-link.active {
+            background: #5B6FFF;
+            color: #FFFFFF;
+        }
+
+        .nav-icon {
+            font-size: 18px;
+            width: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 32px;
+            overflow-y: auto;
+        }
+
+        .header {
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #2A3142;
+        }
+
+        .header-title {
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .header-subtitle {
+            color: #A8AABC;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        .card {
+            background: #1A1F2E;
+            border: 1px solid #2A3142;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .camera-placeholder {
+            border: 2px dashed #2A3142;
+            border-radius: 8px;
+            padding: 60px 24px;
+            text-align: center;
+            background: rgba(91, 111, 255, 0.03);
+        }
+
+        .camera-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .camera-text {
+            color: #A8AABC;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: #5B6FFF;
+            color: #FFFFFF;
+            width: 100%;
+            max-width: 200px;
+        }
+
+        .btn-primary:hover {
+            background: #4A5DE8;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-top: 24px;
+        }
+
+        .stat-box {
+            background: #252C3F;
+            border: 1px solid #2A3142;
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #A8AABC;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #FFFFFF;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">⚡</div>
+                <div class="sidebar-title">App V1</div>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">
+                        <span class="nav-icon">🏠</span>
+                        <span>Beranda</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="live-cam.html" class="nav-link active">
+                        <span class="nav-icon">📷</span>
+                        <span>Live Cam</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="training.html" class="nav-link">
+                        <span class="nav-icon">⚡</span>
+                        <span>Training</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="logs.html" class="nav-link">
+                        <span class="nav-icon">📋</span>
+                        <span>Log Sistem</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="settings.html" class="nav-link">
+                        <span class="nav-icon">⚙️</span>
+                        <span>Pengaturan</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <div class="header-title">Live Detect</div>
+                <div class="header-subtitle">Kamera realtime + anotasi AI (simulasi)</div>
+            </div>
+
+            <!-- Camera Card -->
+            <div class="card">
+                <div class="camera-placeholder">
+                    <div class="camera-icon">📷</div>
+                    <div class="camera-text">Kamera belum aktif</div>
+                    <button class="btn btn-primary">Mulai Streaming</button>
+                </div>
+            </div>
+
+            <!-- Detection Stats -->
+            <div style="margin-top: 32px;">
+                <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 16px;">Detection Statistics</h3>
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div class="stat-label">Objects Detected</div>
+                        <div class="stat-value">0</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Confidence</div>
+                        <div class="stat-value">0%</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">FPS</div>
+                        <div class="stat-value">0</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Response Time</div>
+                        <div class="stat-value">0ms</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
